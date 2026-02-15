@@ -86,7 +86,8 @@ function openModal(type) {
     const modals = {
         'skck': 'modalSKCK',
         'senjata': 'modalSenjata',
-        'sim': 'modalSIM'
+        'sim': 'modalSIM',
+        'plat': 'modalPlat'
     };
     document.getElementById(modals[type]).classList.add('active');
 }
@@ -95,7 +96,8 @@ function closeModal(type) {
     const modals = {
         'skck': 'modalSKCK',
         'senjata': 'modalSenjata',
-        'sim': 'modalSIM'
+        'sim': 'modalSIM',
+        'plat': 'modalPlat'
     };
     document.getElementById(modals[type]).classList.remove('active');
 }
@@ -165,7 +167,9 @@ async function uploadToImgBB(file) {
         const data = await response.json();
         
         if (data.success) {
-            return data.data.url; // Return image URL
+            // Return URL viewer format: https://ibb.co.com/xxxxx
+            // Bukan direct image URL (https://i.ibb.co/xxxxx/image.jpg)
+            return data.data.url_viewer || data.data.url;
         } else {
             throw new Error('Upload failed');
         }
@@ -233,11 +237,13 @@ document.addEventListener('DOMContentLoaded', function() {
 👔 *Nama UCP* : ${namaUCP}
 📋 *Jenis Layanan* : ${jenisLayanan}
 
-📸 *Foto KTP* : 
+📸 *Foto KTP* :
 ${imageUrl}
 
+_(Klik link di atas untuk melihat foto KTP)_
+
 ━━━━━━━━━━━━━━━━━━━━━━
-📝 *Keterangan* : 
+📝 *Keterangan* :
 Saya mengajukan permohonan pelayanan sesuai data di atas.
 
 Terima kasih.
@@ -302,3 +308,4 @@ document.querySelectorAll('.form-input, .dropdown-select').forEach(input => {
         }
     });
 });
+            
