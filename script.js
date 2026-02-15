@@ -167,9 +167,15 @@ async function uploadToImgBB(file) {
         const data = await response.json();
         
         if (data.success) {
-            // Return URL viewer format: https://ibb.co.com/xxxxx
-            // Bukan direct image URL (https://i.ibb.co/xxxxx/image.jpg)
-            return data.data.url_viewer || data.data.url;
+            // Convert URL dari https://ibb.co/xxxx ke https://ibb.co.com/xxxx
+            let imageUrl = data.data.url_viewer || data.data.url;
+            
+            // Ganti ibb.co/ dengan ibb.co.com/
+            if (imageUrl.includes('ibb.co/')) {
+                imageUrl = imageUrl.replace('ibb.co/', 'ibb.co.com/');
+            }
+            
+            return imageUrl;
         } else {
             throw new Error('Upload failed');
         }
@@ -308,4 +314,3 @@ document.querySelectorAll('.form-input, .dropdown-select').forEach(input => {
         }
     });
 });
-            
